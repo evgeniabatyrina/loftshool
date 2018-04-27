@@ -31,10 +31,10 @@ function returnFirstArgument(a) {
    sumWithDefaults(10) вернет 110
  */
 function sumWithDefaults(a, b) {
-	if ( b===undefined ){
-		b = 100;
-	}
-	return a+b;
+    b = ( b === undefined ) ? 100 : b;
+    var sum = a + b;
+
+    return sum;
 }
 
 /*
@@ -46,6 +46,7 @@ function sumWithDefaults(a, b) {
    returnFnResult(() => 'привет') вернет 'привет'
  */
 function returnFnResult(fn) {
+    return fn();
 }
 
 /*
@@ -62,6 +63,10 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number) {
+    number = ( number===undefined ) ? 0 : number;
+    return function F() {
+        return number = number + 1;
+    }
 }
 
 /*
@@ -74,6 +79,11 @@ function returnCounter(number) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
+    var newArray = [];
+    for ( var i=0; i<arguments.length; i++ ){
+        newArray.push( arguments[i] );
+    }
+    return newArray;
 }
 
 /*
@@ -91,7 +101,9 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
+function bindFunction(fn, a, b) {
+    var res = fn.bind(undefined, a, b);
+    return res;
 }
 
 export {
