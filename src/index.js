@@ -16,6 +16,8 @@ function returnFirstArgument(a) {
 	return (a);
 }
 
+
+
 /*
  Задание 2:
 
@@ -37,6 +39,8 @@ function sumWithDefaults(a, b) {
     return sum;
 }
 
+
+
 /*
  Задание 3:
 
@@ -48,6 +52,9 @@ function sumWithDefaults(a, b) {
 function returnFnResult(fn) {
     return fn();
 }
+
+
+
 
 /*
  Задание 4:
