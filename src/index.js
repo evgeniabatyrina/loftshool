@@ -22,10 +22,10 @@ function map(array, fn) {
     var copyarr = [];
 	
     for (var i=0; i < array.length; i++) {
-		copyarr[i] = fn(array[i], i, array);
-	}
+        copyarr[i] = fn(array[i], i, array);
+    }
 	
-	return copyarr;
+    return copyarr;
 }
 /*
  Задание 3:
@@ -34,14 +34,14 @@ function map(array, fn) {
  Посмотрите как работает reduce и повторите это поведение для массива, который будет передан в параметре array
  */
 function reduce(array, fn, initial) {
-	var prev = initial ? initial : array[0];
-	var i = initial ? 0 : 1;
+    var prev = initial ? initial : array[0];
+    var i = initial ? 0 : 1;
 	
-	for (i; i < array.length; i++) {
-		prev = fn(prev, array[i], i, array);
-	}
+    for (i; i < array.length; i++) {
+        prev = fn(prev, array[i], i, array);
+    }
 	
-	return prev;
+    return prev;
 }
 
 /*
@@ -53,15 +53,15 @@ function reduce(array, fn, initial) {
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
 function upperProps(obj) {
-	var arrToUp = [];
+    var arrToUp = [];
 	
-	for (var prop in obj) {
-		if (obj.hasOwnProperty(prop)) {
-			arrToUp.push(prop.toUpperCase());
-		}
-	}
+    for (var prop in obj) {
+        if (obj.hasOwnProperty(prop)) {
+            arrToUp.push(prop.toUpperCase());
+        }
+    }
 	
-	return arrToUp;
+    return arrToUp;
 }
 
 /*
@@ -93,15 +93,15 @@ function slice(array, from, to) {
  Proxy должен перехватывать все попытки записи значений свойств и возводить это значение в квадрат
  */
 function createProxy(obj) {
-	var x = new Proxy(obj, {
-		set: function(obj, prop, value) {
-			obj[prop] = value * value;
+    var x = new Proxy(obj, {
+        set: function(obj, prop, value) {
+            obj[prop] = value * value;
 			
-			return true;
-		}
-	});
+            return true;
+        }
+    });
 	
-	return x;
+    return x;
 }
 
 export {
