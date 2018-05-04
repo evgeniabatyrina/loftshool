@@ -20,11 +20,11 @@ function forEach(array, fn) {
  */
 function map(array, fn) {
     var copyarr = [];
-	
+
     for (var i=0; i < array.length; i++) {
         copyarr[i] = fn(array[i], i, array);
     }
-	
+
     return copyarr;
 }
 /*
@@ -36,11 +36,11 @@ function map(array, fn) {
 function reduce(array, fn, initial) {
     var prev = initial ? initial : array[0];
     var i = initial ? 0 : 1;
-	
+
     for (i; i < array.length; i++) {
         prev = fn(prev, array[i], i, array);
     }
-	
+
     return prev;
 }
 
@@ -54,13 +54,13 @@ function reduce(array, fn, initial) {
  */
 function upperProps(obj) {
     var arrToUp = [];
-	
+
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
             arrToUp.push(prop.toUpperCase());
         }
     }
-	
+
     return arrToUp;
 }
 
@@ -82,7 +82,7 @@ function slice(array, from, to) {
     for (i; i < array.length; i++) {
         newarr.push(array[i]);
     }
-	
+
     return newarr;
 }
 
@@ -96,11 +96,11 @@ function createProxy(obj) {
     var x = new Proxy(obj, {
         set: function(obj, prop, value) {
             obj[prop] = value * value;
-			
+
             return true;
         }
     });
-	
+
     return x;
 }
 
