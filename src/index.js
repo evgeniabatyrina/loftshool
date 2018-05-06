@@ -99,17 +99,17 @@ function returnBadArguments(fn) {
 
     if (typeof fn != 'function') {
         throw new Error('fn is not a function');
-	}
-	
-	for (var i=1; i < arguments.length; i++) {
-		try {
-			fn(arguments[i]);
-		} catch (e) {
-			newarr.push(arguments[i]);
-		}
-	}
+    }
 
-	return newarr;
+    for (var i=1; i < arguments.length; i++) {
+        try {
+            fn(arguments[i]);
+        } catch (e) {
+            newarr.push(arguments[i]);
+        }
+    }
+
+    return newarr;
 }
 
 /*
