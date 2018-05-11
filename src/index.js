@@ -57,7 +57,7 @@ function findAllPSiblings(where) {
         newarr = [];
 
     for (const elem of wh) {
-        if (elem.nextElementSibling.nodeName === 'P') {
+        if (elem.nextElementSibling && elem.nextElementSibling.nodeName === 'P') {
             newarr.push(elem);
         }
     }
@@ -162,6 +162,38 @@ function deleteTextNodesRecursive(where) {
    }
  */
 function collectDOMStat(root) {
+    var result = {
+        tags: {},
+        classes: {},
+        texts: 0
+    }
+
+    function calculateres(root) {
+        for (var node of root.childNodes) {
+            if (node.nodeType === 3) {
+                result.texts++;
+            } else {
+                if (result.tags[node.tagName]) {
+                    result.tags[node.tagName]++;
+                } else {
+                    result.tags[node.tagName] = 1;
+                }
+
+                for (var listclass of node.classList) {
+                    if (result.classes[listclass]) {
+                        result.classes[listclass]++;
+                    } else {
+                        result.classes[listclass] = 1;
+                    }
+                }
+                calculateres(node);
+            }
+        }
+    }
+    
+    calculateres(root);
+
+    return result;
 }
 
 /*
@@ -197,6 +229,31 @@ function collectDOMStat(root) {
    }
  */
 function observeChildNodes(where, fn) {
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.addedNodes.length) {
+                var arraddnodes = [];
+
+                for (var addnode of mutation.addedNodes) {
+                    arraddnodes.push(addnode);
+                }
+                fn({ type: 'insert', nodes: arraddnodes });
+            }
+
+            if (mutation.removedNodes.length) {
+                var arrremnodes = [];
+
+                for (var remnode of mutation.removedNodes) {
+                    arrremnodes.push(remnode);
+                }
+                fn({ type: 'remove', nodes: arrremnodes });
+            }
+        });
+    });
+
+    var config = { childList: true, subtree: true };
+
+    observer.observe(where, config);
 }
 
 export {
