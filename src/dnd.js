@@ -17,6 +17,10 @@
  */
 const homeworkContainer = document.querySelector('#homework-container');
 
+homeworkContainer.style.width = '100%';
+homeworkContainer.style.height = '100vh';
+homeworkContainer.style.position = 'relative';
+
 /*
  Функция должна создавать и возвращать новый div с классом draggable-div и случайными размерами/цветом/позицией
  Функция должна только создавать элемент и задвать ему случайные размер/позицию/цвет
@@ -27,6 +31,37 @@ const homeworkContainer = document.querySelector('#homework-container');
    homeworkContainer.appendChild(newDiv);
  */
 function createDiv() {
+    var div = document.createElement('div');
+
+    div.classList.add('draggable-div');
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // generating random color
+    var r = getRandomInt(0, 255);
+    var g = getRandomInt(0, 255);
+    var b = getRandomInt(0, 255);
+
+    div.style.backgroundColor = 'rgb(' + r + ',' + g + ',' + b + ')';
+
+    // generating random size
+    var width = getRandomInt(0, 1000);
+    var height = getRandomInt(0, 1000);
+
+    div.style.width = width + 'px';
+    div.style.height = height + 'px';
+
+    // generating random coordinate
+    var top = getRandomInt(0, (homeworkContainer.clientHeight - height));
+    var left = getRandomInt(0, (homeworkContainer.clientWidth - width));
+
+    div.style.position = 'absolute';
+    div.style.top = top + 'px';
+    div.style.left = left + 'px';
+
+    return div;
 }
 
 /*
@@ -38,6 +73,31 @@ function createDiv() {
    addListeners(newDiv);
  */
 function addListeners(target) {
+    target.onmousedown = function(e) {
+        var coords = target.getBoundingClientRect();
+        var coordtop = coords.top + pageYOffset;
+        var coordleft = coords.left + pageXOffset;
+        var X = e.pageX - coordleft;
+        var Y = e.pageY - coordtop;
+
+        function goMoveTo(e) {
+            target.style.left = e.pageX - X + 'px';
+            target.style.top = e.pageY - Y + 'px';
+        }
+
+        document.onmousemove = function(e) {
+            goMoveTo(e);
+        };
+
+        target.onmouseup = function() {
+            document.onmousemove = null;
+            target.onmouseup = null;
+        };
+
+        target.ondragstart = function() {
+            return false;
+        };
+    };
 }
 
 let addDivButton = homeworkContainer.querySelector('#addDiv');
