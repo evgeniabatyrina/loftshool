@@ -32,17 +32,62 @@ const homeworkContainer = document.querySelector('#homework-container');
 
 /*
  Функция должна вернуть Promise, который должен быть разрешен с массивом городов в качестве значения
-
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
+
+loadResult();
+
 function loadTowns() {
+    return new Promise((resolve, reject) => {
+        var xhr = new XMLHttpRequest();
+        var towns = {};
+
+        xhr.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json');
+        xhr.responseType = 'json';
+        xhr.send();
+        xhr.addEventListener('load', () => {
+            if (xhr.status === 200) {
+                towns = xhr.response;
+
+                resolve(towns.sort((a, b) => {
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    if (a.name < b.name) {
+                        return -1;
+                    }
+
+                    return 0;
+                }));
+            } else {
+                reject('Не удалось загрузить города');
+            }
+        });
+
+        xhr.addEventListener('error', () => {
+            reject('Не удалось загрузить города');
+        });
+    });
 }
 
+var towns = [];
+
+function loadResult() {
+    loadTowns()
+        .then((response) => {
+            loadingBlock.style.display = 'none';
+            filterBlock.style.display = 'block';
+            towns = response;
+        },
+        (error) => {
+            reloadButton.style.display = 'block';
+            loadingBlock.textContent = error;
+        });
+}
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
  Проверка должна происходить без учета регистра символов
-
  Пример:
    isMatching('Moscow', 'moscow') // true
    isMatching('Moscow', 'mosc') // true
@@ -51,6 +96,7 @@ function loadTowns() {
    isMatching('Moscow', 'Moscov') // false
  */
 function isMatching(full, chunk) {
+    return full.toLowerCase().indexOf(chunk.toLowerCase()) !== -1;
 }
 
 /* Блок с надписью "Загрузка" */
@@ -62,9 +108,43 @@ const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
-filterInput.addEventListener('keyup', function() {
-    // это обработчик нажатия кливиш в текстовом поле
+var reloadButton = document.createElement('button');
+
+reloadButton.textContent = 'Повторить';
+reloadButton.style.display = 'none';
+homeworkContainer.appendChild(reloadButton);
+
+reloadButton.addEventListener('click', () => {
+    reloadButton.style.display = 'none';
+    loadResult();
 });
+
+filterInput.addEventListener('keyup', function () {
+    const input = filterInput.value;
+
+    filterResult.innerHTML = '';
+
+    if (input) {
+        towns.forEach((town) => {
+            loadingBlock.style.display = 'none';
+            filterBlock.style.display = 'block';
+
+            if (isMatching(town.name, input)) {
+                const townDiv = createTownNode(town);
+
+                filterResult.appendChild(townDiv);
+            }
+        })
+    }
+});
+
+function createTownNode(town) {
+    const div = document.createElement('div');
+
+    div.innerText = town.name;
+
+    return div;
+}
 
 export {
     loadTowns,
