@@ -30,7 +30,7 @@ function delayPromise(seconds) {
    loadAndSortTowns().then(towns => console.log(towns)) // должна вывести в консоль отсортированный массив городов
  */
 function loadAndSortTowns() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         var xhr = new XMLHttpRequest();
         var towns = {};
 
@@ -38,18 +38,26 @@ function loadAndSortTowns() {
         xhr.responseType = 'json';
         xhr.send();
         xhr.addEventListener('load', () => {
-            towns = xhr.response;
+            if (xhr.status === 200) {
+                towns = xhr.response;
 
-            resolve(towns.sort((a, b) => {
-                if (a.name > b.name) {
-                    return 1;
-                }
-                if (a.name < b.name) {
-                    return -1;
-                }
+                resolve(towns.sort((a, b) => {
+                    if (a.name > b.name) {
+                        return 1;
+                    }
+                    if (a.name < b.name) {
+                        return -1;
+                    }
 
-                return 0;
-            }));
+                    return 0;
+                }));
+            } else {
+                reject('Не удалось загрузить города');
+            }
+        });
+
+        xhr.addEventListener('error', () => {
+            reject('Не удалось загрузить города');
         });
     });
 }

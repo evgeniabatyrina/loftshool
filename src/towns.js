@@ -35,41 +35,9 @@ const homeworkContainer = document.querySelector('#homework-container');
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
+import { loadAndSortTowns as loadTowns } from '../src/index';
 
 loadResult();
-
-function loadTowns() {
-    return new Promise((resolve, reject) => {
-        var xhr = new XMLHttpRequest();
-        var towns = {};
-
-        xhr.open('GET', 'https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json');
-        xhr.responseType = 'json';
-        xhr.send();
-        xhr.addEventListener('load', () => {
-            if (xhr.status === 200) {
-                towns = xhr.response;
-
-                resolve(towns.sort((a, b) => {
-                    if (a.name > b.name) {
-                        return 1;
-                    }
-                    if (a.name < b.name) {
-                        return -1;
-                    }
-
-                    return 0;
-                }));
-            } else {
-                reject('Не удалось загрузить города');
-            }
-        });
-
-        xhr.addEventListener('error', () => {
-            reject('Не удалось загрузить города');
-        });
-    });
-}
 
 var towns = [];
 
