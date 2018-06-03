@@ -1,0 +1,9 @@
+{{#each items}}
+    <li class="friend" draggable="true">
+        <div class="friendPhoto">
+            <img src="{{photo_100}}" alt="Photo" draggable="false"/>
+        </div>
+        <div class="friendName">{{first_name}} {{last_name}}</div>
+        <button class="friendAction"></button>
+    </li>
+{{/each}}
