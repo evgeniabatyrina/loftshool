@@ -14,9 +14,14 @@ rules.push({
 });
 
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        friend: './src/js/friend.js'
+    },
+    devServer: {
+        friend: 'friend.html'
+    },
     output: {
-        filename: '[name].[hash].js',
+        filename: 'bundle.js',
         path: path.resolve('dist')
     },
     devtool: 'source-map',
@@ -29,10 +34,12 @@ module.exports = {
                 warnings: false
             }
         }),
-        new ExtractTextPlugin('styles.css'),
+        new ExtractTextPlugin('./style/friend.css'),
         new HtmlPlugin({
-            title: 'Loft School sample project',
-            template: 'index.hbs'
+            title: 'Friend',
+            template: './src/template/friend-template.hbs',
+            filename: 'friend.html',
+            chunks: ['friend']
         }),
         new CleanWebpackPlugin(['dist'])
     ]
