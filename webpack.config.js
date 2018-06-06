@@ -14,17 +14,14 @@ rules.push({
 });
 
 module.exports = {
-    entry: {
-        friend: './src/js/friend.js'
-    },
+    entry: './src/js/friend.js',
     devServer: {
-        friend: 'friend.html'
+        index: 'friend.html'
     },
     output: {
         filename: 'bundle.js',
-        path: path.resolve('dist')
+        path: path.resolve(__dirname, './dist')
     },
-    devtool: 'source-map',
     module: { rules },
     plugins: [
         new webpack.optimize.UglifyJsPlugin({
@@ -34,12 +31,10 @@ module.exports = {
                 warnings: false
             }
         }),
-        new ExtractTextPlugin('./style/friend.css'),
+        new ExtractTextPlugin('./src/style/friend.css'),
         new HtmlPlugin({
-            title: 'Friend',
             template: './src/template/friend-template.hbs',
-            filename: 'friend.html',
-            chunks: ['friend']
+            filename: 'friend.html'
         }),
         new CleanWebpackPlugin(['dist'])
     ]
