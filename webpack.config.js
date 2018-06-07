@@ -14,13 +14,15 @@ rules.push({
 });
 
 module.exports = {
-    entry: './src/js/friend.js',
+    entry: {
+        index: './src/friend.js'
+    },
     devServer: {
-        index: 'friend.html'
+        index: 'index.html'
     },
     output: {
-        filename: 'bundle.js',
-        path: path.resolve(__dirname, './dist')
+        filename: '[name].[hash].js',
+        path: path.resolve('dist')
     },
     module: { rules },
     plugins: [
@@ -33,8 +35,10 @@ module.exports = {
         }),
         new ExtractTextPlugin('./src/style/friend.css'),
         new HtmlPlugin({
-            template: './src/template/friend-template.hbs',
-            filename: 'friend.html'
+            title: 'Friends Filter',
+            template: 'index.hbs',
+            filename: 'index.html',
+            chuck: ['index']
         }),
         new CleanWebpackPlugin(['dist'])
     ]

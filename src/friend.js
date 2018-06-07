@@ -1,6 +1,6 @@
-//import './style/friend.css';
-import render from './src/template/friend-template.hbs';
-import {auth, callAPI} from "./src/js/auth.js";
+import './style/friend.css';
+import render from './template/friend-template.hbs';
+import {auth, callAPI} from "./js/auth.js";
 
 let leftList,rightList,leftSearch,rightSearch,mainBody,friends;
 
